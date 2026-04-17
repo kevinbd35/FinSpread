@@ -570,7 +570,11 @@ function renderResults(d,src){
 
   const snap=d.snapshot||{},flags=d.snapshot_flags||{};
   const ks=[{k:'revenue',l:'Revenue',s:'Annual'},{k:'ebitda_margin',l:'EBITDA Margin',s:'Profitability'},{k:'debt_to_equity',l:'Debt / Equity',s:'Leverage'},{k:'current_ratio',l:'Current Ratio',s:'Liquidity'}];
-  document.getElementById('metrics').innerHTML=ks.map(x=>`<div class="met"><div class="met-label">${x.l}</div><div class="met-val ${flags[x.k]||''}">${snap[x.k]||'—'}</div><div class="met-sub">${x.s}</div></div>`).join('');
+  document.getElementById('metrics').innerHTML=ks.map(x=>{
+    const flagClass=flags[x.k]||'';
+    const val=snap[x.k]||'—';
+    return '<div class="met"><div class="met-label">'+x.l+'</div><div class="met-val '+flagClass+'">'+val+'</div><div class="met-sub">'+x.s+'</div></div>';
+  }).join('');
 
   const fm={ok:'<span class="flag flag-ok">Pass</span>',warn:'<span class="flag flag-warn">Review</span>',bad:'<span class="flag flag-bad">Flag</span>'};
   document.getElementById('spread-body').innerHTML=(d.spread||[]).map(r=>`<tr><td>${r.metric}</td><td>${r.value}</td><td style="color:var(--text3)">${r.benchmark||'—'}</td><td>${r.assessment||''} ${fm[r.flag]||''}</td></tr>`).join('');
@@ -767,11 +771,11 @@ function showLeadGate(d, src){
   pendingResult=d; pendingSource=src;
   const snap=d.snapshot||{}, flags=d.snapshot_flags||{};
   const ks=[{k:'revenue',l:'Revenue'},{k:'ebitda_margin',l:'EBITDA Margin'},{k:'debt_to_equity',l:'D/E Ratio'},{k:'current_ratio',l:'Current Ratio'}];
-  document.getElementById('lead-metrics-preview').innerHTML=ks.map(x=>`
-    <div class="lead-met">
-      <div class="lead-met-val ${flags[x.k]||''}">${snap[x.k]||'—'}</div>
-      <div class="lead-met-label">${x.l}</div>
-    </div>`).join('');
+  document.getElementById('lead-metrics-preview').innerHTML=ks.map(x=>{
+    const val=snap[x.k]||'—';
+    const flag=flags[x.k]||'';
+    return '<div class="lead-met"><div class="lead-met-val '+flag+'">'+val+'</div><div class="lead-met-label">'+x.l+'</div></div>';
+  }).join('');
   document.getElementById('lead-gate').classList.remove('hidden');
   document.body.style.overflow='hidden';
 }
@@ -871,11 +875,11 @@ function showLeadGate(d, src){
   pendingResult=d; pendingSource=src;
   const snap=d.snapshot||{}, flags=d.snapshot_flags||{};
   const ks=[{k:'revenue',l:'Revenue'},{k:'ebitda_margin',l:'EBITDA Margin'},{k:'debt_to_equity',l:'D/E Ratio'},{k:'current_ratio',l:'Current Ratio'}];
-  document.getElementById('lead-metrics-preview').innerHTML=ks.map(x=>`
-    <div class="lead-met">
-      <div class="lead-met-val ${flags[x.k]||''}">${snap[x.k]||'—'}</div>
-      <div class="lead-met-label">${x.l}</div>
-    </div>`).join('');
+  document.getElementById('lead-metrics-preview').innerHTML=ks.map(x=>{
+    const val=snap[x.k]||'—';
+    const flag=flags[x.k]||'';
+    return '<div class="lead-met"><div class="lead-met-val '+flag+'">'+val+'</div><div class="lead-met-label">'+x.l+'</div></div>';
+  }).join('');
   document.getElementById('lead-gate').classList.remove('hidden');
   document.body.style.overflow='hidden';
 }
