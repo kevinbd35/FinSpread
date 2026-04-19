@@ -424,10 +424,13 @@ function analyze() {
 
     var prompt = 'You are an expert commercial insurance underwriter and CPA. Analyze the financial statement below and return ONLY valid JSON with no markdown fences.\n\nReturn this exact structure:\n{\n  "company_name": "string",\n  "industry": "string",\n  "fiscal_year": "string like FY2023",\n  "snapshot": {\n    "revenue": "like $8.4M",\n    "ebitda_margin": "like 19.9%",\n    "debt_to_equity": "like 1.25x",\n    "current_ratio": "like 2.1x"\n  },\n  "snapshot_flags": {\n    "revenue": "good or warn or bad",\n    "ebitda_margin": "good or warn or bad",\n    "debt_to_equity": "good or warn or bad",\n    "current_ratio": "good or warn or bad"\n  },\n  "spread": [\n    {\n      "metric": "metric name",\n      "value": "formatted value",\n      "benchmark": "industry benchmark range",\n      "flag": "ok or warn or bad",\n      "assessment": "1 concise sentence"\n    }\n  ],\n  "audit": [\n    {\n      "metric": "same metric name",\n      "sources": "line items from statement",\n      "formula": "formula used",\n      "result": "calculated result",\n      "flag": "ok or warn or bad"\n    }\n  ],\n  "narrative": "4 paragraph underwriter summary covering business overview, strengths, risk factors, and overall insurability."\n}\n\nInclude at least 12 metrics in spread AND matching entries in audit.\n\nFinancial data:\n' + trunc;
 
-    fetch('https://finspread-proxy.kevin-ac1.workers.dev', {
+    fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'x-api-key': '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',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-5',
